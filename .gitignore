@@ -2,10 +2,10 @@
 .env.*
 !.env.example
 .superpowers/
+.worktrees/
 __pycache__/
 .pytest_cache/
 node_modules/
 dist/
 coverage/
 data/
-
