@@ -60,11 +60,14 @@ class RegistrationService:
         for path, value in new_values.items():
             if old_values.get(path) != value:
                 self.session.add(FieldVersion(case_id=case_id, field_path=path, value=value, previous_value=old_values.get(path), source="reviewer", actor_id=actor_id))
-        self.session.add(AuditLog(case_id=case_id, action="registration.updated", actor_id=actor_id, details={"changed_fields": [path for path, value in new_values.items() if old_values.get(path) != value]}))
+        changed_paths = [path for path, value in new_values.items() if old_values.get(path) != value]
+        self.session.add(AuditLog(case_id=case_id, action="registration.updated", actor_id=actor_id, details={"changed_fields": changed_paths}))
+        from app.confirmations.service import ConfirmationService
+        from app.documents.storage import get_storage
+        ConfirmationService(self.session, get_storage()).invalidate_for_changes(case_id, changed_paths)
         self.session.commit()
         return self.get(case_id)
 
     def history(self, case_id: uuid.UUID, field_path: str) -> list[FieldVersion]:
         statement = select(FieldVersion).where(FieldVersion.case_id == case_id, FieldVersion.field_path == field_path).order_by(FieldVersion.created_at.desc(), FieldVersion.id.desc())
         return list(self.session.scalars(statement))
-

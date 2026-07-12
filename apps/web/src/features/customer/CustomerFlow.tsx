@@ -1,9 +1,13 @@
 import { CheckOutlined } from "@ant-design/icons";
 import { Button, Steps, Typography } from "antd";
+import { useState } from "react";
 
+import { ConfirmationView } from "../confirmation/ConfirmationView";
 import { MaterialChecklist } from "./MaterialChecklist";
 
 export function CustomerFlow() {
+  const [confirmation, setConfirmation] = useState(false);
+  if (confirmation) return <ConfirmationView />;
   return (
     <main className="customer-shell" id="main-content">
       <header className="customer-header">
@@ -25,10 +29,9 @@ export function CustomerFlow() {
         </nav>
         <div>
           <MaterialChecklist />
-          <div className="flow-actions"><Button type="primary">保存并继续</Button></div>
+          <div className="flow-actions"><Button type="primary" onClick={() => setConfirmation(true)}>保存并继续</Button></div>
         </div>
       </div>
     </main>
   );
 }
-
