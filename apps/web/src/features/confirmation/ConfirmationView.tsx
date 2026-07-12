@@ -1,11 +1,13 @@
 import { CheckCircleOutlined, FilePdfOutlined, FileWordOutlined } from "@ant-design/icons";
-import { Button, Checkbox, Descriptions, Space, Table, Tag, Typography } from "antd";
+import { Button, Checkbox, Descriptions, Result, Space, Table, Tag, Typography } from "antd";
 import { useState } from "react";
 
 interface Props { onConfirm?: () => void; }
 
 export function ConfirmationView({ onConfirm = () => undefined }: Props) {
   const [acknowledged, setAcknowledged] = useState(false);
+  const [confirmed, setConfirmed] = useState(false);
+  if (confirmed) return <main className="confirmation-view" id="main-content"><Result status="success" title="注册信息已确认" subTitle="确认单版本 1 已锁定" /></main>;
   return <main className="confirmation-view" id="main-content">
     <div className="confirmation-heading">
       <div><Typography.Text type="secondary">确认单版本 1</Typography.Text><Typography.Title level={2}>注册信息确认</Typography.Title></div>
@@ -30,8 +32,7 @@ export function ConfirmationView({ onConfirm = () => undefined }: Props) {
     <div className="confirmation-downloads"><Space><Button icon={<FileWordOutlined />}>Word</Button><Button icon={<FilePdfOutlined />}>PDF</Button></Space></div>
     <div className="confirmation-action">
       <Checkbox checked={acknowledged} onChange={(event) => setAcknowledged(event.target.checked)}>我已核对以上注册信息，确认内容准确无误</Checkbox>
-      <Button type="primary" icon={<CheckCircleOutlined />} disabled={!acknowledged} onClick={onConfirm}>确认注册信息</Button>
+      <Button type="primary" icon={<CheckCircleOutlined />} disabled={!acknowledged} onClick={() => { onConfirm(); setConfirmed(true); }}>确认注册信息</Button>
     </div>
   </main>;
 }
-
