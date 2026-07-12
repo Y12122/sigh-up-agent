@@ -8,6 +8,7 @@ from app.cases import models as case_models
 from app.cases.router import router as cases_router
 from app.config import get_settings
 from app.db import Base, engine
+from app.documents.router import router as documents_router
 from app.registration.router import router as registration_router
 
 
@@ -20,6 +21,7 @@ settings = get_settings()
 app = FastAPI(title=settings.app_name, lifespan=lifespan)
 app.include_router(cases_router)
 app.include_router(registration_router)
+app.include_router(documents_router)
 
 
 @app.exception_handler(RequestValidationError)
