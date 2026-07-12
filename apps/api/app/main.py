@@ -9,6 +9,7 @@ from app.cases.router import router as cases_router
 from app.config import get_settings
 from app.db import Base, engine
 from app.documents.router import router as documents_router
+from app.preflight import jobs as preflight_jobs
 from app.registration.router import router as registration_router
 
 

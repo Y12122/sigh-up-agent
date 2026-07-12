@@ -12,6 +12,12 @@ class Settings(BaseSettings):
     minio_secret_key: str = "registration_dev_only"
     minio_bucket: str = "registration-documents"
     storage_provider: str = "memory"
+    ocr_provider: str = "mock"
+    ocr_endpoint: str = ""
+    ocr_api_key: str = ""
+    llm_provider: str = "mock"
+    llm_endpoint: str = ""
+    llm_api_key: str = ""
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
